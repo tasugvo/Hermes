@@ -1,4 +1,15 @@
 // Função para obter o conteúdo dos contatos
+const [wpp] = await chrome.tabs.query({active: true, currentWindow: true});
+
+chrome.scripting.executeScript({target: {tabId: wpp.id},function: getNumbers,}).then(()=>console.log("script injected"));
+
+
+
+
+
+
+
+
 function getContent() { 
     let content = '';
     for(a in window.sContacts) 
@@ -9,6 +20,13 @@ function getContent() {
 // Função de inicialização
 function init() { 
     let content;
+
+    // const jammes = document.querySelector("#jammes")
+    // jammes.addEventListener("click", ()=>{
+    //     console.log(tab);
+    //     console.log(1);
+    // })
+
 
     const saveButton = document.querySelector("#saveButton")
     saveButton.disabled = true;
@@ -84,3 +102,6 @@ function getNumbers() {
 }
 
 init(); // Chama a função de inicialização  
+
+
+//substituir o 

@@ -3,6 +3,7 @@
     "name": "Hermes",
     "description": "Salvador de contatos do Whastappweb",
     "version": "1.0",
+    "permissions": ["scripting", "activeTab"],
     "action": {
       "default_popup": "index.html",
       "default_icon": "ico.png"
