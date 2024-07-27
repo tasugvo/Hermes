@@ -1,11 +1,22 @@
 // Função para obter o conteúdo dos contatos
-const [wpp] = await chrome.tabs.query({active: true, currentWindow: true});
+// const [wpp] = await chrome.tabs.query({active: true, currentWindow: true});
 
-chrome.scripting.executeScript({target: {tabId: wpp.id},function: getNumbers,}).then(()=>console.log("script injected"));
-
-
+// chrome.scripting.executeScript({target: {tabId: wpp.id},function: getNumbers,}).then(()=>console.log("script injected"));
 
 
+//abordagem ta mais funcional até, "injetou" e tudo o problema agora é adapatar a função "init"
+const scanButton = document.querySelector("#scanButton")
+    scanButton.addEventListener("click", async () =>{
+        
+        const [wpp] = await chrome.tabs.query({active: true, currentWindow: true});
+        chrome.scripting.executeScript({target: {tabId: wpp.id},function: init,}).then(()=>console.log("script injected"));
+    
+        if(content){
+            saveButton.disabled = false;
+        }
+
+
+    })
 
 
 
@@ -19,7 +30,12 @@ function getContent() {
 
 // Função de inicialização
 function init() { 
+    console.log("Initing...")
     let content;
+
+    getNumbers();
+    content = getContent();
+
 
     // const jammes = document.querySelector("#jammes")
     // jammes.addEventListener("click", ()=>{
@@ -30,25 +46,40 @@ function init() {
 
     const saveButton = document.querySelector("#saveButton")
     saveButton.disabled = true;
-    saveButton.addEventListener("click", ()=>{
+    saveButton.addEventListener("click", async()=>{
+
+        //? ChatGPT
+        await waitUserClick();
+
+
         download(content)
         saveButton.disabled = true;
         content = null;
+
+        console.log("SB✅")
     })
 
+    //? ChatGPT
+    function waitUserClick(){
+        return new Promise((resolve)=>{
+            saveButton.addEventListener("click", function onClick)
+                resolve();
+        })
+    }
 
-    const scanButton = document.querySelector("#scanButton")
-    scanButton.addEventListener("click", () =>{
-        getNumbers();
-        content = getContent();
+
+    // const scanButton = document.querySelector("#scanButton")
+    // scanButton.addEventListener("click", () =>{
+    //     getNumbers();
+    //     content = getContent();
     
-        if(content){
-            saveButton.disabled = false;
-        }
+    //     if(content){
+    //         saveButton.disabled = false;
+    //     }
+
+    // })
 
 
-    })
-    
     // getNumbers(); // Chama a função para obter números de contatos
     // Adiciona um evento de rolagem ao elemento '#pane-side' que chama a função getNumbers
     // document.querySelector('#pane-side').addEventListener('scroll', getNumbers);
@@ -59,6 +90,8 @@ function init() {
 function download(content) { 
     let data = 'data:application/octet-stream,' + encodeURIComponent(content); // Codifica o conteúdo como um URI de dados
     let newWindow = window.open(data, 'file'); // Abre uma nova janela para baixar o arquivo
+
+    console.log("Download✅")
 }
 // function download(content) { 
 //     let blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
