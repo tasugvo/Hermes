@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
     "name": "Hermes",
-    "description": "Salvador de contatos do Whastappweb",
-    "version": "1.0",
+    "description": "Um leitor de contatos para o whatsapp web desenvolvido pela ATA software",
+    "version": "0.0.1",
     "permissions": ["scripting", "activeTab"],
     "action": {
       "default_popup": "index.html",
